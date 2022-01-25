@@ -6,6 +6,12 @@ You onlt need to run this code once.  Onve you do you can just run Git Push and 
 ** rm -fr (to deleter directories?)
 
 
+****************
+
+for the css and bundle links 
+https://getbootstrap.com/docs/5.1/getting-started/introduction/
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
