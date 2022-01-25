@@ -13,7 +13,7 @@ function App() {
   return (
     <div className="App">
       {/* {/* all context comes with the provider component This allows us to use this as a wrapper and share information to all of its children. after hardcoding the value (example) we need the value prop inside our provider. *} */}
-      <UserContext.Provider value={'Christina'}>
+      <UserContext.Provider value={'Carmen'}>
         <Nav />
       </UserContext.Provider>
     </div>
