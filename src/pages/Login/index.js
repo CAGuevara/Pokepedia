@@ -1,18 +1,24 @@
-import React from 'react';
+
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles.css'
 
 const Login = ({setUser}) => {
     //once the users clicks in submit we will mimic logging in and conditionally render our nav bar
     const [username, setUsername] = useState('')
-    
+    const navigate = useNavigate()
+
     const handleChange = e => {
         setUsername(e.target.value)
     }
     const handleSubmit = e => {
         e.preventDefault()
         setUser(username)
+        navigate('/pokemon/list')
     } 
+
+    // we can use useNavigate from rr to redirect our users to different component page
+    //do not forget / in navigate
 
     return (
    
