@@ -1,3 +1,11 @@
+git Command 
+-u == --set -upstream : defines where we are going to push into.
+You onlt need to run this code once.  Onve you do you can just run Git Push and it will automaticalle push into the branch that you set the upstream for. 
+
+** ls -a is to show the hidden documentation
+** rm -fr (to deleter directories?)
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
