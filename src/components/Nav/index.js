@@ -5,8 +5,8 @@ import UserContext from '../../contexts/UserContext'
 import Login from '../../pages/Login';
 
 const Nav = () => {
-   // const user = useContext(UserContext);
-  // console.log(user)
+   const user = useContext(UserContext);
+  console.log('nav', user)
 
   //below we will use link to react router to replacer all of our anachor tags 
   //replace hraf to Link and   
@@ -26,6 +26,7 @@ const Nav = () => {
                             <li className="nav-item">
                                 <Link className="nav-link" to="login">Login</Link>
                             </li>
+                            
                         </ul>
                     </div>
                 </div>
