@@ -1,10 +1,11 @@
-
-import { useContext, useState } from 'react'
+import axios from 'axios';
+import { useContext, useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom';
 import Nav from './components/Nav';
 import Login from './pages/Login'
 import Home from './pages/Home'
 import PokemonList from './pages/PokemonList';
+
 //contexts
 import UserContext from './contexts/UserContext';
 
@@ -16,6 +17,25 @@ const App = ()=> {
   // console.log(user)
   //we will pass on our user to all of app's children via de provider value prop
   const [user, setUser]=  useState('')
+  const [pokeList, setPokeList] = useState([])
+
+  useEffect (() => {
+    fetchPokemon()
+
+    //dependency array:  if empty, it will call useEffect once only when DOM Component loads. 
+  },[])
+
+  const fetchPokemon = async () => {
+     try {
+      const response = await axios.get("https://pokeapi.co/api/v2/pokemon?limit=1118")
+      setPokeList(response.data.results)
+      
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+console.log('This is Pokelist',pokeList)
   return (
     <div className="App">
       {/* {/* all context comes with the provider component This allows us to use this as a wrapper and share information to all of its children. after hardcoding the value (example) we need the value prop inside our provider. *} */}
@@ -26,7 +46,7 @@ const App = ()=> {
         <Routes>
             <Route path='/' element={<Home/>} />
             <Route path='login' element={<Login setUser={setUser} />} />
-            <Route path='pokemon/list' element={<PokemonList />} /> 
+            <Route path='pokemon/list' element={<PokemonList pokeList ={pokeList} itemsPerPage={8}/>} /> 
         </Routes>
       </UserContext.Provider>
     </div>
