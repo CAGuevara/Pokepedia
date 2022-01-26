@@ -1,24 +1,60 @@
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import axios from 'axios';
+import { getAllByTitle } from '@testing-library/react';
 
 const PokemonList = ({ pokeList, itemsPerPage }) => {
 
     // const pokemon = pokeList.map(pokemon => <li>{pokemon.name}</li>)
 
     // We start with an empty list of pokeList.
-    const [currentItems, setCurrentItems] = useState(null);
+    const [currentPokemon, setCurrentPokemon] = useState(null);
     const [pageCount, setPageCount] = useState(0);
     // Here we use item offsets; we could also use page offsets
     // following the API or data you're working with.
     const [itemOffset, setItemOffset] = useState(0);
 
     useEffect(() => {
+        try {
+            const endOffset = itemOffset + itemsPerPage;
+            console.log(`Loading pokeList from ${itemOffset} to ${endOffset}`);
+            const pokeURLs =[]
+            for (let i=itemOffset + 1; i <= endOffset; i++){
+                pokeURLs.push(`https://pokeapi.co/api/v2/pokemon/${i}`)
+            }
+            // console.log('URLs', pokeURLs)
+            currPagePokemon(pokeURLs)
+            // setCurrentPokemon(pokeList.slice(itemOffset, endOffset));
+            // we need to make a conditional so our page pokemon doesn't get invoked unless hwe have data to work with.
+
+            // setCurrentPokemon(pokeList.slice(itemOffset, endOffset));
+            setPageCount(Math.ceil(pokeList.length / itemsPerPage));
+
+        } catch (error) {
+            console.log(error)
+        }
+
         // Fetch pokeList from another resources.
-        const endOffset = itemOffset + itemsPerPage;
-        console.log(`Loading pokeList from ${itemOffset} to ${endOffset}`);
-        setCurrentItems(pokeList.slice(itemOffset, endOffset));
-        setPageCount(Math.ceil(pokeList.length / itemsPerPage));
+
     }, [itemOffset, itemsPerPage]);
+
+
+    const currPagePokemon = (pokeURLs) => {
+
+        try{
+                // axios all() makes all concurrent requests 
+                //instead of doin gindividuals req, we can programatically make multiple req
+                //if one of our promises fails, the entire request fails.
+                axios.all(pokeURLs.map(async (url) => {
+                    const response = await axios.get(url)
+                    console.log(response.data)
+
+                })) 
+        }catch (error) {
+            console.log(error)
+        }
+
+    }
 
     const Pokemon = () => {
         return (
@@ -26,7 +62,7 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
                 {pokeList &&
                     pokeList.map(pokemon => (
                         <div>
-                            <h3>{pokemon.name}</h3>
+                            {/* <h3>{pokemon.name}</h3> */}
                         </div>
                     ))
 
@@ -43,7 +79,7 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
         );
         setItemOffset(newOffset);
     };
-
+    console.log('Current Pokemon', currentPokemon)
     return (
         <div>
             {/* POKEMON LIST */}
@@ -52,7 +88,7 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
             <ReactPaginate
                 nextLabel="next >"
                 onPageChange={handlePageClick}
-                pageRangeDisplayed={3}
+                pageRangeDisplayed={2}
                 marginPagesDisplayed={2}
                 pageCount={pageCount}
                 previousLabel="< previous"
