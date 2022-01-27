@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import axios from 'axios';
+import './styles.css'
 import { getAllByTitle } from '@testing-library/react';
 
 const PokemonList = ({ pokeList, itemsPerPage }) => {
@@ -18,8 +19,8 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
         try {
             const endOffset = itemOffset + itemsPerPage;
             console.log(`Loading pokeList from ${itemOffset} to ${endOffset}`);
-            const pokeURLs =[]
-            for (let i=itemOffset + 1; i <= endOffset; i++){
+            const pokeURLs = []
+            for (let i = itemOffset + 1; i <= endOffset; i++) {
                 pokeURLs.push(`https://pokeapi.co/api/v2/pokemon/${i}`)
             }
             // console.log('URLs', pokeURLs)
@@ -28,7 +29,9 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
             // we need to make a conditional so our page pokemon doesn't get invoked unless hwe have data to work with.
 
             // setCurrentPokemon(pokeList.slice(itemOffset, endOffset));
-            setPageCount(Math.ceil(pokeList.length / itemsPerPage));
+            // setPageCount(Math.ceil(pokeList.length / itemsPerPage));
+            const length = pokeList.length ? pokeList.length : 1118
+            setPageCount(Math.ceil(length / itemsPerPage));
 
         } catch (error) {
             console.log(error)
@@ -41,20 +44,20 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
 
     const currPagePokemon = (pokeURLs) => {
 
-        try{
-                // axios all() makes all concurrent requests 
-                //instead of doin gindividuals req, we can programatically make multiple req
-                //if one of our promises fails, the entire request fails.
-                const pokeArr = []
-                axios.all(pokeURLs.map(async (url) => {
-                    const response = await axios.get(url)
-                    // console.log(response.data)
-                    pokeArr.push(response.data)
-                    setCurrentPokemon(pokeArr.flat())
-                    // setCurrentPokemon([...currentPokemon, response.data])
-                })) 
-                // console.log('POKE ARRAY', pokeArr)
-        }catch (error) {
+        try {
+            // axios all() makes all concurrent requests 
+            //instead of doin gindividuals req, we can programatically make multiple req
+            //if one of our promises fails, the entire request fails.
+            const pokeArr = []
+            axios.all(pokeURLs.map(async (url) => {
+                const response = await axios.get(url)
+                // console.log(response.data)
+                pokeArr.push(response.data)
+                setCurrentPokemon(pokeArr.flat())
+                // setCurrentPokemon([...currentPokemon, response.data])
+            }))
+            // console.log('POKE ARRAY', pokeArr)
+        } catch (error) {
             console.log(error)
         }
 
@@ -62,16 +65,20 @@ const PokemonList = ({ pokeList, itemsPerPage }) => {
 
     const Pokemon = () => {
         return (
-            <>
+            <div id="pokemon-container">
                 {currentPokemon &&
                     currentPokemon.map(pokemon => (
-                        <div>
-                            <h3>{pokemon.name}</h3>
+                        <div className="card poke-card" key={pokemon.id}>
+                            <img src={pokemon.sprites.front_shiny} className="card-img-top" alt="..."/>
+                                <div className="card-body">
+                                    <h5 className="card-title">{pokemon.name}</h5>
+                                    <p className="card-text">Order: {pokemon.id}</p>
+                                    <a href="#" className="btn btn-primary">Go somewhere</a>
+                                </div>
                         </div>
                     ))
-
                 }
-            </>
+            </div>
         );
     }
 
