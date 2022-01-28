@@ -1,3 +1,6 @@
+![](“image-url-here”). to add pictures to the repo
+
+
 git Command 
 -u == --set -upstream : defines where we are going to push into.
 You onlt need to run this code once.  Onve you do you can just run Git Push and it will automaticalle push into the branch that you set the upstream for. 
